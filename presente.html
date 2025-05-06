@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa História</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #3a7bd5;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .memory-container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: rotate(30deg);
+            animation: shine 6s infinite linear;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(30deg) translate(-30%, -30%); }
+            100% { transform: rotate(30deg) translate(30%, 30%); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .time-counter {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .counter-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .counter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .counter-item {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 10px;
+            min-width: 70px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .counter-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .counter-label {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #555;
+            margin: 25px 0;
+            padding: 0 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+            text-align: center;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+
+        .music-container {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .spotify-embed {
+            width: 100%;
+            height: 80px;
+            border-radius: 12px;
+            border: none;
+            margin-top: 15px;
+        }
+
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .photo {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Modal da Galeria */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-img {
+            max-width: 100%;
+            max-height: 80vh;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 1001;
+            background: rgba(0,0,0,0.5);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            z-index: 1001;
+            user-select: none;
+        }
+
+        .prev { left: 15px; }
+        .next { right: 15px; }
+
+        .caption {
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        /* Emojis flutuantes */
+        .emoji {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: none;
+            animation: float linear forwards;
+            z-index: 10;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .counter {
+                gap: 10px;
+            }
+            
+            .counter-item {
+                min-width: 60px;
+                padding: 10px 5px;
+            }
+            
+            .counter-number {
+                font-size: 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .photos-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .counter-item {
+                min-width: 50px;
+                padding: 8px 5px;
+            }
+            
+            .counter-number {
+                font-size: 1.3rem;
+            }
+            
+            .counter-label {
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="memory-container">
+        <div class="header">
+            <h1 class="title" id="pageTitle">Nossa História</h1>
+            <p class="subtitle" id="pageSubtitle">Cada momento é especial</p>
+        </div>
+        
+        <div class="content">
+            <!-- Contador de Tempo -->
+            <div class="time-counter">
+                <h3 class="counter-title">❤️Eu te amo há ❤️:</h3>
+                <div class="counter">
+                    <div class="counter-item">
+                        <div class="counter-number" id="years">0</div>
+                        <div class="counter-label">Anos</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-number" id="months">0</div>
+                        <div class="counter-label">Meses</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-number" id="days">0</div>
+                        <div class="counter-label">Dias</div>
+                    </div>
+                    <div class="counter-item">
+                        <div class="counter-number" id="hours">0</div>
+                        <div class="counter-label">Horas</div>
+                    </div>
+                </div>
+                <p id="startDateText" style="margin-top: 15px; color: #666; font-style: italic;"></p>
+            </div>
+            
+            <!-- Descrição -->
+            <div class="description" id="memoryDescription">
+                Desde o primeiro dia que nos conhecemos, cada momento se tornou especial. Esta página é um tributo a todos os momentos incríveis que compartilhamos juntos.
+            </div>
+            
+            <!-- Nossa Música -->
+            <div class="section">
+                <h2 class="section-title">Nossa Música</h2>
+                <div class="music-container">
+                    <iframe class="spotify-embed" src="https://open.spotify.com/embed/track/1QV6tiMFM6fSOKOGLMHYYg?utm_source=generator" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+                </div>
+            </div>
+            
+            <!-- Nossos Momentos -->
+            <div class="section">
+                <h2 class="section-title">Nossos Momentos</h2>
+                <div class="photos-container" id="photosContainer">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,1" alt="Nosso primeiro encontro" class="photo" data-caption="Nosso primeiro encontro">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,2" alt="Férias na praia" class="photo" data-caption="Férias na praia">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,3" alt="Aniversário juntos" class="photo" data-caption="Aniversário juntos">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,4" alt="Passeio no parque" class="photo" data-caption="Passeio no parque">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,5" alt="Jantar romântico" class="photo" data-caption="Jantar romântico">
+                    <img src="https://source.unsplash.com/random/600x600/?couple,love,6" alt="Viagem inesquecível" class="photo" data-caption="Viagem inesquecível">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal da Galeria -->
+    <div class="modal" id="imageModal">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <div class="modal-content">
+            <img class="modal-img" id="modalImage" src="" alt="">
+            <div class="caption" id="caption"></div>
+        </div>
+        <span class="nav-btn prev" id="prevBtn">&#10094;</span>
+        <span class="nav-btn next" id="nextBtn">&#10095;</span>
+    </div>
+
+    <script>
+        // Configurações personalizáveis
+        const config = {
+            startDate: '2001-12-24', // Formato: YYYY-MM-DD
+            title: 'Nossa História',
+            subtitle: 'Cada momento é especial',
+            description: 'Desde o primeiro dia que nos conhecemos, cada momento se tornou especial. Esta página é um tributo a todos os momentos incríveis que compartilhamos juntos.',
+            spotifyTrack: '1QV6tiMFM6fSOKOGLMHYYg', // ID da música no Spotify
+            photos: [
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,1', caption: 'Nosso primeiro encontro' },
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,2', caption: 'Férias na praia' },
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,3', caption: 'Aniversário juntos' },
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,4', caption: 'Passeio no parque' },
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,5', caption: 'Jantar romântico' },
+                { src: 'https://source.unsplash.com/random/600x600/?couple,love,6', caption: 'Viagem inesquecível' }
+            ]
+        };
+
+        // Aplicar configurações
+        document.getElementById('pageTitle').textContent = config.title;
+        document.getElementById('pageSubtitle').textContent = config.subtitle;
+        document.getElementById('memoryDescription').textContent = config.description;
+        
+        // Atualizar player do Spotify
+        const spotifyEmbed = document.querySelector('.spotify-embed');
+        spotifyEmbed.src = `https://open.spotify.com/embed/track/${config.spotifyTrack}?utm_source=generator`;
+        
+        // Gerar galeria de fotos
+        const photosContainer = document.getElementById('photosContainer');
+        photosContainer.innerHTML = config.photos.map(photo => `
+            <img src="${photo.src}" alt="${photo.caption}" class="photo" data-caption="${photo.caption}">
+        `).join('');
+
+        // Contador de tempo
+        function updateTimeCounter() {
+            const startDate = new Date(config.startDate);
+            const now = new Date();
+            
+            let diff = now - startDate;
+            
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            diff -= years * (1000 * 60 * 60 * 24 * 365);
+            
+            const months = Math.floor(diff / (1000 * 60 * 60 * 24 * 30));
+            diff -= months * (1000 * 60 * 60 * 24 * 30);
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            diff -= days * (1000 * 60 * 60 * 24);
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            
+            // Formatar data de início
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const startDateFormatted = startDate.toLocaleDateString('pt-BR', options);
+            document.getElementById('startDateText').textContent = `Desde ${startDateFormatted}`;
+        }
+        
+        // Atualizar contador a cada hora
+        updateTimeCounter();
+        setInterval(updateTimeCounter, 3600000);
+        
+        // Galeria de fotos
+        document.addEventListener('DOMContentLoaded', function() {
+            const photos = document.querySelectorAll('.photo');
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            const captionText = document.getElementById('caption');
+            const closeModal = document.getElementById('closeModal');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            let currentIndex = 0;
+            
+            // Abrir modal ao clicar na imagem
+            photos.forEach((photo, index) => {
+                photo.addEventListener('click', () => {
+                    currentIndex = index;
+                    updateModal();
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            // Fechar modal
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Navegação
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+                updateModal();
+            });
+            
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % photos.length;
+                updateModal();
+            });
+            
+            function updateModal() {
+                const currentPhoto = photos[currentIndex];
+                modalImg.src = currentPhoto.src;
+                captionText.textContent = currentPhoto.getAttribute('data-caption');
+            }
+            
+            // Teclado para navegação
+            document.addEventListener('keydown', (e) => {
+                if (modal.style.display === 'flex') {
+                    if (e.key === 'ArrowLeft') {
+                        currentIndex = (currentIndex - 1 + photos.length) % photos.length;
+                        updateModal();
+                    } else if (e.key === 'ArrowRight') {
+                        currentIndex = (currentIndex + 1) % photos.length;
+                        updateModal();
+                    } else if (e.key === 'Escape') {
+                        modal.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            });
+            
+            // Fechar ao clicar fora da imagem
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Efeito de emojis flutuantes
+            function createFloatingEmoji() {
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji');
+                const emojis = ['❤️', '🥰', '💕', '😍', '💘', '💖', '💓', '💞'];
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                
+                emoji.style.left = Math.random() * 100 + 'vw';
+                emoji.style.top = '100vh';
+                emoji.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                emoji.style.animationDuration = (Math.random() * 5 + 5) + 's';
+                
+                document.body.appendChild(emoji);
+                
+                // Remover após animação
+                setTimeout(() => {
+                    emoji.remove();
+                }, 6000);
+            }
+            
+            // Criar emojis periodicamente
+            setInterval(createFloatingEmoji, 800);
+            
+            // Criar alguns emojis imediatamente
+            for (let i = 0; i < 10; i++) {
+                setTimeout(createFloatingEmoji, i * 300);
+            }
+        });
+    </script>
+</body>
+</html>
