@@ -307,6 +307,10 @@
             z-index: 0;
         }
 
+        .heart.front {
+            z-index: 2; /* Maior que o z-index do memory-container */
+        }
+
         @keyframes fall {
             to {
                 transform: translateY(100vh);
@@ -624,6 +628,11 @@
                 const heart = document.createElement('div');
                 heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
                 heart.classList.add('heart');
+                
+                // 30% de chance do coração ficar na frente
+                if (Math.random() < 0.3) {
+                    heart.classList.add('front');
+                }
                 
                 // Posição aleatória na parte superior
                 heart.style.left = Math.random() * 100 + 'vw';
